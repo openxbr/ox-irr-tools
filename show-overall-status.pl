@@ -20,6 +20,7 @@
 
 while(<>) {
 	chomp;
+    next if /^Status/;
 	($status,$prefixo,$asn,$origin,$maint,$source) = split /,/;
 	$count{$status}++; 
 }

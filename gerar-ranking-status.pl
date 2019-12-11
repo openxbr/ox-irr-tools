@@ -23,6 +23,7 @@ $my_status = shift;
 while(<>) {
 
 	chomp;
+	next if /^Status/;	
 	($status,$prefix,$asn,$origin,$maint,$source) = split /,/;
 	$count{$maint}++ if $status eq $my_status;
 }
