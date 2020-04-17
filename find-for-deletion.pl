@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# find-for-deletion.pl - Version 0.9
+# find-for-deletion.pl - Version 1.0
 # Copyright (C) 2013-2019 Renato Ornelas - renato@openx.com.br
 #
 # For the latest updates, please visit https://github.com/openxbr/ox-irr-tools
@@ -31,15 +31,16 @@ while(<>) {
 
 	$asn_ok{$prefix} = $origin if $status eq "OK";
 
-	$delete{$prefix} = "INVALID" if /^INVALID.*,$my_maint,/;
-	$delete{$prefix} = "PROXY" if /^PROXY.*,$my_maint,/;
+	$invalid{$prefix} = $origin if /^INVALID.*,$my_maint,/;
+	$uneeded{$prefix} = "UNEEDED" if /^UNEEDED.*,$my_maint,/;
 }
 
 
 foreach $prefix (keys %asn_ok) {
 
-	if ($delete{$prefix}) {
+	if ($uneeded{$prefix}) {
 		$type = $prefix =~ /::/ ? "route6" : "route";
+        print "password: $my_password\n" and $pass = 1 unless $pass;
 		print "
 $type:		$prefix
 origin:		AS$asn_ok{$prefix}
@@ -48,10 +49,22 @@ descr:		$my_desc
 notify:		$my_email
 changed:	$my_email $y$m$d
 source:		$my_db
-delete:		$delete{$prefix}
+delete:		PROXY
 ";
 
 	}
-	
-
+}
+foreach $prefix (keys %invalid) {
+		$type = $prefix =~ /::/ ? "route6" : "route";
+        print "password: $my_password\n" and $pass = 1 unless $pass;
+		print "
+$type:		$prefix
+origin:		AS$invalid{$prefix}
+mnt-by:		$my_maint
+descr:		$my_desc
+notify:		$my_email
+changed:	$my_email $y$m$d
+source:		$my_db
+delete:		INVALID
+";
 }
