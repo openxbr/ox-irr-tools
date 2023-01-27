@@ -25,7 +25,7 @@ O flag -d mostra se alguma das rotas existe com a origem incorreta
 
 * download.sh
 
-Faz o download da ultima versão dos dados e salva em ox-irr-check-latest.csv. Este arquuivo será o parametro OX-IRR-CHECK-OUTPUT das outras ferramentas.
+Faz o download da ultima versão dos dados e salva em ox-irr-check-latest.csv. Este arquivo será o parametro OX-IRR-CHECK-OUTPUT das outras ferramentas.
   
  ------------------
   
